@@ -32,6 +32,7 @@ import androidx.navigation.NavController
 import com.akshat.weatherforecastcompose.data.DataOrException
 import com.akshat.weatherforecastcompose.model.Weather
 import com.akshat.weatherforecastcompose.model.WeatherItem
+import com.akshat.weatherforecastcompose.navigation.WeatherScreens
 import com.akshat.weatherforecastcompose.utils.formatDate
 import com.akshat.weatherforecastcompose.utils.formatDecimals
 import com.akshat.weatherforecastcompose.widgets.HumidityWindPressureRow
@@ -44,13 +45,14 @@ import com.akshat.weatherforecastcompose.widgets.WeatherStateImage
 @Composable
 fun MainScreen(
     navController: NavController,
-    mainViewModel: MainViewModel = hiltViewModel()
+    mainViewModel: MainViewModel = hiltViewModel(),
+    city: String?
 ) {
 
     val weatherData = produceState<DataOrException<Weather, Boolean, Exception>>(
         initialValue = DataOrException(loading = true)
     ) {
-        value = mainViewModel.getWeatherData(city = "Toronto")
+        value = mainViewModel.getWeatherData(city = city.toString())
     }.value
 
     if (weatherData.loading == true)
@@ -69,6 +71,10 @@ fun MainScaffold(weather: Weather, navController: NavController) {
             title = weather.city.name + ", ${weather.city.country}",
             icon = Icons.Default.ArrowBack,
             navController = navController,
+            onAddActionClicked = {
+                navController.navigate(route = WeatherScreens.SearchScreen.name)
+
+            },
             elevation = 7.dp
         ) {
 
