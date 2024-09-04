@@ -15,6 +15,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -87,7 +88,6 @@ fun MainScaffold(weather: Weather, navController: NavController, isImperial: Boo
     Scaffold(topBar = {
         WeatherAppBar(
             title = weather.city.name + ", ${weather.city.country}",
-            icon = Icons.Default.ArrowBack,
             navController = navController,
             onAddActionClicked = {
                 navController.navigate(route = WeatherScreens.SearchScreen.name)

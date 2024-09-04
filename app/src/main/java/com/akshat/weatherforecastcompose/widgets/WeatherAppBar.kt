@@ -7,6 +7,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Info
@@ -91,20 +92,23 @@ fun WeatherAppBar(
                 } else Box { }
             },
             navigationIcon = {
-                if (icon != null) {
-                    Icon(imageVector = icon,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onSecondary,
-                        modifier = Modifier.clickable {
-                            onButtonClicked.invoke()
-                        })
-                }
-                if (isMainScreen) {
-                    val isAlreadyFavList = favouriteViewModel.favList.collectAsState().value.filter { item ->
-                        (item.city == title.split(",")[0])
+                IconButton(onClick = {
+                    onButtonClicked.invoke()
+                }) {
+                    if (!isMainScreen){
+                        Icon(
+                            imageVector = Icons.Default.ArrowBack, contentDescription = "Back Icons"
+                        )
                     }
+                }
 
-                    if (isAlreadyFavList.isNullOrEmpty()){
+                if (isMainScreen) {
+                    val isAlreadyFavList =
+                        favouriteViewModel.favList.collectAsState().value.filter { item ->
+                            (item.city == title.split(",")[0])
+                        }
+
+                    if (isAlreadyFavList.isNullOrEmpty()) {
                         Icon(
                             imageVector = Icons.Default.Favorite,
                             contentDescription = "Fav icon",
@@ -112,16 +116,17 @@ fun WeatherAppBar(
                                 .scale(0.9f)
                                 .clickable {
                                     val dataList = title.split(",")
-                                    favouriteViewModel.insertFavourite(
-                                        Favourite(
-                                            city = dataList[0], country = dataList[1]
+                                    favouriteViewModel
+                                        .insertFavourite(
+                                            Favourite(
+                                                city = dataList[0], country = dataList[1]
+                                            )
                                         )
-                                    ).run { showIt.value = true }
+                                        .run { showIt.value = true }
                                 },
                             tint = Color.Red.copy(alpha = 0.6f)
                         )
-                    }
-                    else {
+                    } else {
                         showIt.value = false
                         Box {}
                     }
@@ -135,7 +140,7 @@ fun WeatherAppBar(
 
 @Composable
 fun ShowToast(context: Context, showIt: MutableState<Boolean>) {
-    if (showIt.value){
+    if (showIt.value) {
         Toast.makeText(context, "Added to Favs", Toast.LENGTH_SHORT).show()
     }
 

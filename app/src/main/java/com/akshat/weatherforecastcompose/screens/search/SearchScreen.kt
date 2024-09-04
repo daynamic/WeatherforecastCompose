@@ -32,7 +32,6 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.akshat.weatherforecastcompose.navigation.WeatherScreens
 import com.akshat.weatherforecastcompose.widgets.WeatherAppBar
-import kotlin.math.max
 
 @Composable
 fun SearchScreen(navController: NavController) {
